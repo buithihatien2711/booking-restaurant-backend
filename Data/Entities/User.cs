@@ -27,5 +27,16 @@ namespace backend.Data.Entities
         public DateTime CreateAt { get; set; }
         
         public DateTime UpdateAt { get; set; }
+
+        public int RoleId { get; set; }
+        
+        public Role Role { get; set; }
+        
+        public List<Restaurant>? Restaurants { get; set; }
+
+        public List<Reservation>? Reservations { get; set; }
+        
+        
+
     }
 }

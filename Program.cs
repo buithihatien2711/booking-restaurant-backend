@@ -1,7 +1,11 @@
 using System.Text;
 using backend.Data;
-using backend.Data.Repository;
-using backend.Services;
+using backend.Data.Repository.RestaurantRepository;
+using backend.Data.Repository.UserRepository;
+using backend.Data.Seed;
+using backend.Mapping;
+using backend.Services.RestaurantService;
+using backend.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,10 +20,9 @@ services.AddControllersWithViews();
 
 services.AddCors(o =>
     o.AddPolicy("CorsPolicy", builder =>
-        builder.WithOrigins("http://localhost:4200")
+        builder.WithOrigins("*")
             .AllowAnyHeader()
             .AllowAnyMethod()));
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,6 +33,20 @@ services.AddDbContext<DataContext>(options =>
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IUserRepository, UserRepository>();
+
+services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+services.AddScoped<IRestaurantService, RestaurantService>();
+
+services.AddScoped<ISuitabilityRepository, SuitabilityRepository>();
+services.AddScoped<ISuitabilityService, SuitabilityService>();
+
+services.AddScoped<IServiceRepository, ServiceRepository>();
+services.AddScoped<IServicesService, ServicesService>();
+
+services.AddScoped<ICuisineRepository, CuisineRepository>();
+services.AddScoped<ICuisineService, CuisineService>();
+
+services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -47,6 +64,58 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var serviceProvider = scope.ServiceProvider;
+// Seed service
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedService(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+// Seed cuisine
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedCuisine(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+// Seed suitability
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    
+    Seed.SeedSuitability(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+// Seed role
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedRole(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
