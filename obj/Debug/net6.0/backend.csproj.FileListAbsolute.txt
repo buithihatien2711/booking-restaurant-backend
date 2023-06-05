@@ -83,3 +83,6 @@ D:\Ki8\booking-restaurant\backend\obj\Debug\net6.0\refint\backend.dll
 D:\Ki8\booking-restaurant\backend\obj\Debug\net6.0\backend.pdb
 D:\Ki8\booking-restaurant\backend\obj\Debug\net6.0\backend.genruntimeconfig.cache
 D:\Ki8\booking-restaurant\backend\obj\Debug\net6.0\ref\backend.dll
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\cities.json
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\districts.json
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\wards.json

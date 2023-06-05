@@ -18,7 +18,7 @@ namespace backend.Data.Entities
         
         public Ward? Ward { get; set; }
 
-        public int RestaurantId { get; set; }
+        public Guid? RestaurantId { get; set; }
         
         public Restaurant? Restaurant { get; set; }
 

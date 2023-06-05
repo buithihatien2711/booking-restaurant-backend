@@ -27,8 +27,7 @@ namespace backend.Migrations
                 name: "ExtraServices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -148,25 +147,6 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    WardId = table.Column<int>(type: "int", nullable: true),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Locations_Wards_WardId",
-                        column: x => x.WardId,
-                        principalTable: "Wards",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Restaurants",
                 columns: table => new
                 {
@@ -180,17 +160,11 @@ namespace backend.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Restaurants_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Restaurants_Users_UserId",
                         column: x => x.UserId,
@@ -217,6 +191,30 @@ namespace backend.Migrations
                         principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    WardId = table.Column<int>(type: "int", nullable: true),
+                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locations_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Locations_Wards_WardId",
+                        column: x => x.WardId,
+                        principalTable: "Wards",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -272,12 +270,11 @@ namespace backend.Migrations
                 columns: table => new
                 {
                     RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CuisineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeOfCuisineId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantCuisines", x => new { x.CuisineId, x.RestaurantId });
+                    table.PrimaryKey("PK_RestaurantCuisines", x => new { x.TypeOfCuisineId, x.RestaurantId });
                     table.ForeignKey(
                         name: "FK_RestaurantCuisines_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
@@ -340,12 +337,11 @@ namespace backend.Migrations
                 columns: table => new
                 {
                     RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false),
                     TypeOfServiceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantServices", x => new { x.RestaurantId, x.ServiceId });
+                    table.PrimaryKey("PK_RestaurantServices", x => new { x.RestaurantId, x.TypeOfServiceId });
                     table.ForeignKey(
                         name: "FK_RestaurantServices_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
@@ -395,6 +391,13 @@ namespace backend.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Locations_RestaurantId",
+                table: "Locations",
+                column: "RestaurantId",
+                unique: true,
+                filter: "[RestaurantId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Locations_WardId",
                 table: "Locations",
                 column: "WardId");
@@ -420,11 +423,6 @@ namespace backend.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantCuisines_TypeOfCuisineId",
-                table: "RestaurantCuisines",
-                column: "TypeOfCuisineId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RestaurantExtraServices_ExtraServiceId",
                 table: "RestaurantExtraServices",
                 column: "ExtraServiceId");
@@ -433,13 +431,6 @@ namespace backend.Migrations
                 name: "IX_RestaurantImages_RestaurantId",
                 table: "RestaurantImages",
                 column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_LocationId",
-                table: "Restaurants",
-                column: "LocationId",
-                unique: true,
-                filter: "[LocationId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_UserId",
@@ -474,6 +465,9 @@ namespace backend.Migrations
                 name: "BusinessHours");
 
             migrationBuilder.DropTable(
+                name: "Locations");
+
+            migrationBuilder.DropTable(
                 name: "MenuImages");
 
             migrationBuilder.DropTable(
@@ -495,6 +489,9 @@ namespace backend.Migrations
                 name: "RestaurantSuitabilities");
 
             migrationBuilder.DropTable(
+                name: "Wards");
+
+            migrationBuilder.DropTable(
                 name: "TypeOfCuisines");
 
             migrationBuilder.DropTable(
@@ -510,22 +507,16 @@ namespace backend.Migrations
                 name: "Suitabilities");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Districts");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Wards");
+                name: "Cities");
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Districts");
-
-            migrationBuilder.DropTable(
-                name: "Cities");
         }
     }
 }

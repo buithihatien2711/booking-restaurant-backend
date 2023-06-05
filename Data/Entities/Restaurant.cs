@@ -41,8 +41,6 @@ namespace backend.Data.Entities
         
         public List<RestaurantSuitability>? RestaurantSuitabilities { get; set; }
         
-        public Guid? LocationId { get; set; }
-        
         public Location? Location { get; set; }
         
         public List<RestaurantExtraService>? RestaurantExtraServices { get; set; }

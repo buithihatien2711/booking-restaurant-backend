@@ -30,10 +30,10 @@ namespace backend.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<RestaurantCuisine>()
-                .HasKey(rc => new {rc.CuisineId, rc.RestaurantId});
+                .HasKey(rc => new {rc.TypeOfCuisineId, rc.RestaurantId});
 
             builder.Entity<RestaurantService>()
-                .HasKey(rs => new {rs.RestaurantId, rs.ServiceId});
+                .HasKey(rs => new {rs.RestaurantId, rs.TypeOfServiceId});
 
             builder.Entity<RestaurantSuitability>()
                 .HasKey(rs => new {rs.RestaurantId, rs.SuitabilityId});
@@ -69,7 +69,11 @@ namespace backend.Data
 
             builder.Entity<Suitability>()
                         .Property(t => t.Id)
-                        .ValueGeneratedNever(); 
+                        .ValueGeneratedNever();
+
+            builder.Entity<ExtraService>()
+                        .Property(t => t.Id)
+                        .ValueGeneratedNever();  
 
             builder.Entity<Ward>()
                         .Property(t => t.Id)

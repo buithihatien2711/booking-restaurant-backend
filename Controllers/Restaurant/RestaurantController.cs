@@ -1,4 +1,5 @@
 using backend.Data.Entities;
+using backend.DTOs.ResponseDTO;
 using backend.DTOs.RestaurantDTO;
 using backend.Services.RestaurantService;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,23 @@ namespace backend.Controllers.Restaurant
             _restaurantService = restaurantService;
             
         }
-        [HttpGet("collection")]
-        public ActionResult<List<RestaurantOverviewDto>> GetAllRestaurant(string? filter = null)
+        [HttpGet("collection/{filter}")]
+        public ActionResult GetListRestaurant(string? filter = null)
         {
             if(string.IsNullOrEmpty(filter)){
-                return _restaurantService.GetListRestaurant("");
+                return Ok(new SuccessResponse<List<RestaurantOverviewDto>>(){
+                    Success = true,
+                    Message = "Get list restaurant success",
+                    Data = _restaurantService.GetListRestaurant("", 1)
+                });
             }
-            return _restaurantService.GetListRestaurant(filter);
+
+            // return Ok(_restaurantService.GetListRestaurant(filter, 1));
+            return Ok(new SuccessResponse<List<RestaurantOverviewDto>>(){
+                    Success = true,
+                    Message = "Get list restaurant success",
+                    Data = _restaurantService.GetListRestaurant(filter, 1)
+                });
         }
 
         [HttpGet("{id}")]

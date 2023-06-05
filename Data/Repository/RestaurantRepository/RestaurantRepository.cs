@@ -9,6 +9,7 @@ namespace backend.Data.Repository.RestaurantRepository
 {
     public class RestaurantRepository : IRestaurantRepository
     {
+        public static int PAGE_SIZE { get; set; } = 20;
         private readonly DataContext _context;
 
         public RestaurantRepository(DataContext context)
@@ -18,17 +19,24 @@ namespace backend.Data.Repository.RestaurantRepository
         }
 
         // Get Restaurant by criteria
-        public List<Restaurant>? GetListRestaurant(string? filter)
+        public List<Restaurant>? GetListRestaurant(string? filter, int page = 1)
         {
             var restaurants = _context.Restaurants.Include(r => r.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District).ThenInclude(d => d.City)
                                                     .Include(r => r.RestaurantCuisines)
                                                     .Include(r => r.RestaurantServices)
-                                                    .Include(r => r.RestaurantSuitabilities).ToList();
+                                                    .Include(r => r.RestaurantSuitabilities)
+                                                    .Include(r => r.RestaurantImages)
+                                                    .Skip((page - 1)*PAGE_SIZE).Take(PAGE_SIZE).ToList();
             
             // if(filter == "top-restaurant")
             // {
             //     // restaurants = restaurants.OrderByDescending();
             // }
+
+            // Page, auto return page 1
+
+            ///
+            
             return restaurants;
         }
     }

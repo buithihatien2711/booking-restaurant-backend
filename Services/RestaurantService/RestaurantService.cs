@@ -22,9 +22,9 @@ namespace backend.Services.RestaurantService
             _servicesService = servicesService;
         }
 
-        public List<RestaurantOverviewDto>? GetListRestaurant(string? filter)
+        public List<RestaurantOverviewDto>? GetListRestaurant(string? filter, int pageIndex)
         {
-            var restaurants = _restaurantRepository.GetListRestaurant(filter);
+            var restaurants = _restaurantRepository.GetListRestaurant(filter, pageIndex);
             if(restaurants == null) {
                 return null;
             }
@@ -43,7 +43,7 @@ namespace backend.Services.RestaurantService
                     Services = services,
                     PriceRange = restaurant.PriceRange,
                     Location = new LocationDto(){
-                        Id = restaurant.LocationId,
+                        // Id = restaurant.LocationId,
                         Address = restaurant.Location.Address,
                         Ward = new WardDto() {
                             Id = restaurant.Location.Ward.Id,
@@ -57,7 +57,8 @@ namespace backend.Services.RestaurantService
                                 }
                             }
                         }
-                    }
+                    },
+                    Image = restaurant.RestaurantImages == null ? null : restaurant.RestaurantImages[0].URL
                 });
             }
             return restaurantOverviews;

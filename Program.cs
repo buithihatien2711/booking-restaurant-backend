@@ -91,6 +91,18 @@ catch (Exception ex)
     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "Migration Failed");
 }
+// Seed extra service
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedExtraService(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
 // Seed suitability
 try
 {
@@ -109,6 +121,66 @@ try
 {
     var context = serviceProvider.GetRequiredService<DataContext>();
     Seed.SeedRole(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+
+// Seed restaurant
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedRestaurants(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+
+// Seed ward, district, city
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedCity(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedDistrict(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedWard(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+// Seed location
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedLocation(context);
     context.Database.Migrate();
 }
 catch (Exception ex)

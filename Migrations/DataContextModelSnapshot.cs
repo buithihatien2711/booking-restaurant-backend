@@ -82,10 +82,7 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Data.Entities.ExtraService", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -106,13 +103,17 @@ namespace backend.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId")
+                        .IsUnique()
+                        .HasFilter("[RestaurantId] IS NOT NULL");
 
                     b.HasIndex("WardId");
 
@@ -194,9 +195,6 @@ namespace backend.Migrations
                     b.Property<string>("Introduction")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -221,10 +219,6 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId")
-                        .IsUnique()
-                        .HasFilter("[LocationId] IS NOT NULL");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Restaurants");
@@ -232,20 +226,15 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Entities.RestaurantCuisine", b =>
                 {
-                    b.Property<Guid>("CuisineId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TypeOfCuisineId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TypeOfCuisineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CuisineId", "RestaurantId");
+                    b.HasKey("TypeOfCuisineId", "RestaurantId");
 
                     b.HasIndex("RestaurantId");
-
-                    b.HasIndex("TypeOfCuisineId");
 
                     b.ToTable("RestaurantCuisines");
                 });
@@ -290,13 +279,10 @@ namespace backend.Migrations
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TypeOfServiceId")
                         .HasColumnType("int");
 
-                    b.HasKey("RestaurantId", "ServiceId");
+                    b.HasKey("RestaurantId", "TypeOfServiceId");
 
                     b.HasIndex("TypeOfServiceId");
 
@@ -462,9 +448,15 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Entities.Location", b =>
                 {
+                    b.HasOne("backend.Data.Entities.Restaurant", "Restaurant")
+                        .WithOne("Location")
+                        .HasForeignKey("backend.Data.Entities.Location", "RestaurantId");
+
                     b.HasOne("backend.Data.Entities.Ward", "Ward")
                         .WithMany("Locations")
                         .HasForeignKey("WardId");
+
+                    b.Navigation("Restaurant");
 
                     b.Navigation("Ward");
                 });
@@ -501,17 +493,11 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Entities.Restaurant", b =>
                 {
-                    b.HasOne("backend.Data.Entities.Location", "Location")
-                        .WithOne("Restaurant")
-                        .HasForeignKey("backend.Data.Entities.Restaurant", "LocationId");
-
                     b.HasOne("backend.Data.Entities.User", "User")
                         .WithMany("Restaurants")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-
-                    b.Navigation("Location");
 
                     b.Navigation("User");
                 });
@@ -635,14 +621,11 @@ namespace backend.Migrations
                     b.Navigation("RestaurantExtraServices");
                 });
 
-            modelBuilder.Entity("backend.Data.Entities.Location", b =>
-                {
-                    b.Navigation("Restaurant");
-                });
-
             modelBuilder.Entity("backend.Data.Entities.Restaurant", b =>
                 {
                     b.Navigation("BusinessHours");
+
+                    b.Navigation("Location");
 
                     b.Navigation("MenuImages");
 

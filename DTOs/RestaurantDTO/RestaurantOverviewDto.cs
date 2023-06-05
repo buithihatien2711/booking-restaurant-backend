@@ -16,5 +16,9 @@ namespace backend.DTOs.RestaurantDTO
         public List<ServiceDto> Services { get; set; }
         
         public PriceRange PriceRange { get; set; }
+
+        public string Image { get; set; }
+        
+        
     }
 }

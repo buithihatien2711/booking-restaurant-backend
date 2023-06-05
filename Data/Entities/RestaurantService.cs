@@ -11,7 +11,7 @@ namespace backend.Data.Entities
         
         public Restaurant Restaurant { get; set; }
         
-        public int ServiceId { get; set; }
+        public int TypeOfServiceId { get; set; }
 
         public TypeOfService TypeOfService { get; set; }
     }

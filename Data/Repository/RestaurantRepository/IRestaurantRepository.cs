@@ -8,6 +8,6 @@ namespace backend.Data.Repository.RestaurantRepository
 {
     public interface IRestaurantRepository
     {
-        List<Restaurant>? GetListRestaurant(string? filter);
+        List<Restaurant>? GetListRestaurant(string? filter, int page = 1);
     }
 }

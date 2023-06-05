@@ -5,7 +5,7 @@ namespace backend.Services.RestaurantService
 {
     public interface IRestaurantService
     {
-        List<RestaurantOverviewDto>? GetListRestaurant(string? filter);
+        List<RestaurantOverviewDto>? GetListRestaurant(string? filter, int pageIndex);
 
         
     }
