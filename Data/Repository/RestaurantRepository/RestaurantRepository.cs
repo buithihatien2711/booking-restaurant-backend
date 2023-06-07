@@ -39,5 +39,21 @@ namespace backend.Data.Repository.RestaurantRepository
             
             return restaurants;
         }
+
+        public Restaurant? GetRestaurantById(Guid idRestaurant)
+        {
+            var restaurant = _context.Restaurants.Include(r => r.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District).ThenInclude(d => d.City)
+                                                    .Include(r => r.RestaurantCuisines)
+                                                    .Include(r => r.RestaurantServices)
+                                                    .Include(r => r.RestaurantSuitabilities)
+                                                    .Include(r => r.RestaurantImages)
+                                                    .Include(r => r.BusinessHours)
+                                                    .Include(r => r.RestaurantExtraServices)
+                                                    .Include(r => r.MenuImages)
+                                                    .FirstOrDefault(r => r.Id == idRestaurant);
+                                                    
+
+            return restaurant;
+        }
     }
 }

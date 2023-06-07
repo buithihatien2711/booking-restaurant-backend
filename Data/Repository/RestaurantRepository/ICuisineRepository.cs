@@ -8,7 +8,7 @@ namespace backend.Data.Repository.RestaurantRepository
 {
     public interface ICuisineRepository
     {
-        List<TypeOfCuisine> GetAllCuisine();
+        List<TypeOfCuisine>? GetAllCuisine();
 
         List<TypeOfCuisine>? GetCuisineOfRestaurant(Guid restaurantId);
     }

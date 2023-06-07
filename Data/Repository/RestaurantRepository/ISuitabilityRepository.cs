@@ -8,7 +8,7 @@ namespace backend.Data.Repository.RestaurantRepository
 {
     public interface ISuitabilityRepository
     {
-        List<Suitability> GetAllSuitability();
+        List<Suitability>? GetAllSuitability();
 
         List<Suitability>? GetSuitabilityOfRestaurant(Guid restaurantId);
     }

@@ -24,14 +24,15 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Entities.BusinessHour", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<TimeSpan>("CloseTime")
                         .HasColumnType("time");
+
+                    b.Property<int>("Date")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("OpenTime")
                         .HasColumnType("time");

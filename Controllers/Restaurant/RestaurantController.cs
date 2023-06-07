@@ -36,9 +36,22 @@ namespace backend.Controllers.Restaurant
         }
 
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult Get(Guid id)
         {
-            return "value";
+            var restaurant = _restaurantService.GetRestaurantById(id);
+            if(restaurant == null) return NotFound(
+                new ErrorResponse() {
+                    Success = false,
+                    ErrorMessage = "Không tìm thấy nhà hàng nào"
+                }
+            );
+            return Ok(
+                new SuccessResponse<RestaurantDetailDto>(){
+                    Success = true,
+                    Message = "Get restaurant success",
+                    Data = restaurant
+                }
+            );
         }
 
         [HttpPost]

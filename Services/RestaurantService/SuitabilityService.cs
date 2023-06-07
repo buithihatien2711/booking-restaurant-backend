@@ -20,18 +20,17 @@ namespace backend.Services.RestaurantService
             
         }
 
-        public List<SuitabilityDto> GetAllSuitability()
+        public List<SuitabilityDto>? GetAllSuitability()
         {
             var suitabilities = _suitabilityRepository.GetAllSuitability();
+            if(suitabilities == null) return null;
             return _mapper.Map<List<Suitability>, List<SuitabilityDto>>(suitabilities);
         }
 
         public List<SuitabilityDto>? GetSuitabilityOfRestaurant(Guid restaurantId)
         {
             var suitabilities = _suitabilityRepository.GetSuitabilityOfRestaurant(restaurantId);
-            if(suitabilities == null) {
-                return null;
-            }
+            if(suitabilities == null) return null;
             return _mapper.Map<List<Suitability>, List<SuitabilityDto>>(suitabilities);
         }
     }

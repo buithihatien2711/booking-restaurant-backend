@@ -20,15 +20,17 @@ namespace backend.Services.RestaurantService
             _mapper = mapper;
         }
 
-        public List<CuisineDto> GetAllCuisine()
+        public List<CuisineDto>? GetAllCuisine()
         {
             var cuisines = _cuisineRepository.GetAllCuisine();
+            if(cuisines == null) return null;
             return _mapper.Map<List<TypeOfCuisine>, List<CuisineDto>>(cuisines);
         }
 
-        public List<CuisineDto> GetCuisineOfRestaurant(Guid restaurantId)
+        public List<CuisineDto>? GetCuisineOfRestaurant(Guid restaurantId)
         {
             var cuisines = _cuisineRepository.GetCuisineOfRestaurant(restaurantId);
+            if(cuisines == null) return null;
             return _mapper.Map<List<TypeOfCuisine>, List<CuisineDto>>(cuisines);
         }
     }

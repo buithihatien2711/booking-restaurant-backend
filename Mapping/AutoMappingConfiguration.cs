@@ -11,6 +11,9 @@ namespace backend.Mapping
             CreateMap<TypeOfCuisine, CuisineDto>();
             CreateMap<TypeOfService, ServiceDto>();
             CreateMap<Suitability, SuitabilityDto>();
+            CreateMap<MenuImage, MenuImageDto>();
+            CreateMap<BusinessHour, BusinessHourDto>();
+            CreateMap<ExtraService, ExtraServiceDto>();
         }
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using backend.Data.Entities;
 using backend.Data.Repository.RestaurantRepository;
 using backend.DTOs.LocationDTO;
 using backend.DTOs.RestaurantDTO;
@@ -12,9 +13,11 @@ namespace backend.Services.RestaurantService
         private readonly IServicesService _servicesService;
         private readonly IMapper _mapper;
         private readonly ISuitabilityService _suitabilityService;
+        private readonly IExtraServiceService _extraServiceService;
 
-        public RestaurantService(IRestaurantRepository restaurantRepository, ICuisineService cuisineService, IServicesService servicesService, ISuitabilityService suitabilityService, IMapper mapper)
+        public RestaurantService(IRestaurantRepository restaurantRepository, ICuisineService cuisineService, IServicesService servicesService, ISuitabilityService suitabilityService, IExtraServiceService extraServiceService, IMapper mapper)
         {
+            _extraServiceService = extraServiceService;
             _suitabilityService = suitabilityService;
             _mapper = mapper;
             _restaurantRepository = restaurantRepository;
@@ -62,6 +65,49 @@ namespace backend.Services.RestaurantService
                 });
             }
             return restaurantOverviews;
+        }
+
+        public RestaurantDetailDto? GetRestaurantById(Guid idRestaurant)
+        {
+            var restaurant = _restaurantRepository.GetRestaurantById(idRestaurant);
+            var cuisines = _cuisineService.GetCuisineOfRestaurant(restaurant.Id);
+            var services = _servicesService.GetServiceOfRestaurant(restaurant.Id);
+            var extraServices = _extraServiceService.GetExtraServiceOfRestaurant(restaurant.Id);
+
+            if(restaurant == null) {
+                return null;
+            }
+
+            return new RestaurantDetailDto()
+            {
+                Id = restaurant.Id,
+                Name = restaurant.Name,
+                Cuisines = cuisines,
+                Services = services,
+                Location = new LocationDto(){
+                    // Id = restaurant.LocationId,
+                    Address = restaurant.Location.Address,
+                    Ward = new WardDto() {
+                        Id = restaurant.Location.Ward.Id,
+                        Name = restaurant.Location.Ward.Name,
+                        District = new DistrictDto() {
+                            Id = restaurant.Location.Ward.District.Id,
+                            Name = restaurant.Location.Ward.District.Name,
+                            City = new CityDto() {
+                                Id = restaurant.Location.Ward.District.CityId,
+                                Name = restaurant.Location.Ward.District.City.Name
+                            }
+                        }
+                    }
+                },
+                Capacity = restaurant.Capacity,
+                SpecialDishes = restaurant.SpecialDishes,
+                Introduction = restaurant.Introduction,
+                Note = restaurant.Note,
+                MenuImages = restaurant.MenuImages == null ? null : _mapper.Map<List<MenuImage>, List<MenuImageDto>>(restaurant.MenuImages),
+                BusinessHours = restaurant.BusinessHours == null ? null : _mapper.Map<List<BusinessHour>, List<BusinessHourDto>>(restaurant.BusinessHours),
+                ExtraServices = extraServices
+            };
         }
     }
 }

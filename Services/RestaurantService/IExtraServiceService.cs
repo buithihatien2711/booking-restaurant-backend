@@ -6,10 +6,10 @@ using backend.DTOs.RestaurantDTO;
 
 namespace backend.Services.RestaurantService
 {
-    public interface ICuisineService
+    public interface IExtraServiceService
     {
-        List<CuisineDto>? GetAllCuisine();
+        List<ExtraServiceDto>? GetAllExtraService();
 
-        List<CuisineDto>? GetCuisineOfRestaurant(Guid restaurantId);
+        List<ExtraServiceDto>? GetExtraServiceOfRestaurant(Guid restaurantId);
     }
 }

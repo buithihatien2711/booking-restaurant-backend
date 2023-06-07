@@ -7,6 +7,6 @@ namespace backend.Services.RestaurantService
     {
         List<RestaurantOverviewDto>? GetListRestaurant(string? filter, int pageIndex);
 
-        
+        RestaurantDetailDto? GetRestaurantById(Guid idRestaurant);
     }
 }

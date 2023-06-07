@@ -176,8 +176,8 @@ namespace backend.Migrations
                 name: "BusinessHours",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<int>(type: "int", nullable: false),
                     OpenTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     CloseTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)

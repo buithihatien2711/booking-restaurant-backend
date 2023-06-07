@@ -15,7 +15,7 @@ namespace backend.Data.Repository.RestaurantRepository
             _context = context;
         }
 
-        public List<Suitability> GetAllSuitability()
+        public List<Suitability>? GetAllSuitability()
         {
             return _context.Suitabilities.ToList();
         }

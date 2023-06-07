@@ -6,10 +6,10 @@ using backend.Data.Entities;
 
 namespace backend.Data.Repository.RestaurantRepository
 {
-    public interface IServiceRepository
+    public interface IExtraServiceRepository
     {
-        List<TypeOfService>? GetAllService();
+        List<ExtraService>? GetAllExtraService();
 
-        List<TypeOfService>? GetServiceOfRestaurant(Guid restaurantId);
+        List<ExtraService>? GetExtraServiceOfRestaurant(Guid restaurantId);
     }
 }

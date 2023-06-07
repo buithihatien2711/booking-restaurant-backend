@@ -12,7 +12,7 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230605035741_InitDb")]
+    [Migration("20230607142918_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -27,14 +27,15 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Data.Entities.BusinessHour", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<TimeSpan>("CloseTime")
                         .HasColumnType("time");
+
+                    b.Property<int>("Date")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("OpenTime")
                         .HasColumnType("time");

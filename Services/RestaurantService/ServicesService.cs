@@ -15,15 +15,17 @@ namespace backend.Services.RestaurantService
             _mapper = mapper;
             _serviceRepository = serviceRepository;
         }
-        public List<ServiceDto> GetAllService()
+        public List<ServiceDto>? GetAllService()
         {
             var services = _serviceRepository.GetAllService();
+            if(services == null) return null;
             return _mapper.Map<List<TypeOfService>, List<ServiceDto>>(services);
         }
 
-        public List<ServiceDto> GetServiceOfRestaurant(Guid restaurantId)
+        public List<ServiceDto>? GetServiceOfRestaurant(Guid restaurantId)
         {
             var services = _serviceRepository.GetServiceOfRestaurant(restaurantId);
+            if(services == null) return null;
             return _mapper.Map<List<TypeOfService>, List<ServiceDto>>(services);
         }
     }

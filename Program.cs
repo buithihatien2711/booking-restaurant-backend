@@ -46,6 +46,9 @@ services.AddScoped<IServicesService, ServicesService>();
 services.AddScoped<ICuisineRepository, CuisineRepository>();
 services.AddScoped<ICuisineService, CuisineService>();
 
+services.AddScoped<IExtraServiceRepository, ExtraServiceRepository>();
+services.AddScoped<IExtraServiceService, ExtraServiceService>();
+
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

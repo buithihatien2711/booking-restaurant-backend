@@ -15,7 +15,7 @@ namespace backend.Data.Repository.RestaurantRepository
             
         }
 
-        public List<TypeOfService> GetAllService()
+        public List<TypeOfService>? GetAllService()
         {
             return _context.TypeOfServices.ToList();
         }
