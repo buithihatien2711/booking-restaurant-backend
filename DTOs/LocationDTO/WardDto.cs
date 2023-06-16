@@ -11,6 +11,6 @@ namespace backend.DTOs.LocationDTO
         
         public string Name { get; set; }
         
-        public DistrictDto District { get; set; }
+        // public DistrictDto District { get; set; }
     }
 }

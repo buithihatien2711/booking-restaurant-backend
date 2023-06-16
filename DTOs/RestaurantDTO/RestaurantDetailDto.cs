@@ -13,7 +13,13 @@ namespace backend.DTOs.RestaurantDTO
         public string Name { get; set; }
         
         public LocationDto Location { get; set; }
+
+        public WardDto Ward { get; set; }
         
+        public DistrictDto District { get; set; }
+        
+        public CityDto City { get; set; }
+
         public List<CuisineDto>? Cuisines { get; set; }
         
         public List<ServiceDto>? Services { get; set; }
@@ -26,7 +32,9 @@ namespace backend.DTOs.RestaurantDTO
         
         public string? Note { get; set; }
         
-        public List<MenuImageDto>? MenuImages { get; set; }
+        public List<ImageDto>? RestaurantImages { get; set; }
+
+        public List<ImageDto>? MenuImages { get; set; }
         
         public List<BusinessHourDto>? BusinessHours { get; set; }
         

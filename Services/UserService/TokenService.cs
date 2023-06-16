@@ -21,7 +21,8 @@ namespace backend.Services.UserService
             {
                 new Claim("Fullname", userTokenDto.Fullname),
                 new Claim("Phone", userTokenDto.Phone),
-                new Claim(JwtRegisteredClaimNames.Email, userTokenDto.Email)
+                new Claim(JwtRegisteredClaimNames.Email, userTokenDto.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, userTokenDto.Id.ToString()),
             };
  
             var symmetricKey = new SymmetricSecurityKey

@@ -16,14 +16,14 @@ namespace backend.Controllers.Restaurant
             _restaurantService = restaurantService;
             
         }
-        [HttpGet("collection/{filter}")]
-        public ActionResult GetListRestaurant(string? filter = null)
+        [HttpGet("collection/{filter}/{page}")]
+        public ActionResult GetListRestaurant(string? filter, int page)
         {
             if(string.IsNullOrEmpty(filter)){
                 return Ok(new SuccessResponse<List<RestaurantOverviewDto>>(){
                     Success = true,
                     Message = "Get list restaurant success",
-                    Data = _restaurantService.GetListRestaurant("", 1)
+                    Data = _restaurantService.GetListRestaurant("", page)
                 });
             }
 
@@ -31,7 +31,7 @@ namespace backend.Controllers.Restaurant
             return Ok(new SuccessResponse<List<RestaurantOverviewDto>>(){
                     Success = true,
                     Message = "Get list restaurant success",
-                    Data = _restaurantService.GetListRestaurant(filter, 1)
+                    Data = _restaurantService.GetListRestaurant(filter, page)
                 });
         }
 

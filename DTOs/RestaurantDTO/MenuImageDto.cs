@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs.RestaurantDTO
 {
-    public class MenuImageDto
+    public class ImageDto
     {
         public Guid Id { get; set; }
         

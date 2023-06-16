@@ -29,6 +29,10 @@ namespace backend.Data.Entities
         
         public Restaurant Restaurant { get; set; }
         
+        public ReservationStatus ReservationStatus { get; set; }
+
+        public string NameCustomer { get; set; }
         
+        public string PhoneCustomer { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Data.Entities;
 
 namespace backend.DTOs.RestaurantDTO
 {
@@ -9,7 +10,7 @@ namespace backend.DTOs.RestaurantDTO
     {
         public Guid Id { get; set; }
 
-        public DayOfWeek Date { get; set; }
+        public Data.Entities.DayOfWeek Date { get; set; }
 
         public TimeSpan OpenTime { get; set; }
         

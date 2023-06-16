@@ -11,6 +11,6 @@ namespace backend.DTOs.LocationDTO
         
         public string Address { get; set; }
         
-        public WardDto Ward { get; set; }
+        // public WardDto Ward { get; set; }
     }
 }

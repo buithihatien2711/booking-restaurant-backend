@@ -28,7 +28,8 @@ namespace backend.Services.RestaurantService
         public List<RestaurantOverviewDto>? GetListRestaurant(string? filter, int pageIndex)
         {
             var restaurants = _restaurantRepository.GetListRestaurant(filter, pageIndex);
-            if(restaurants == null) {
+            if (restaurants == null)
+            {
                 return null;
             }
             var restaurantOverviews = new List<RestaurantOverviewDto>();
@@ -37,7 +38,7 @@ namespace backend.Services.RestaurantService
             {
                 var cuisines = _cuisineService.GetCuisineOfRestaurant(restaurant.Id);
                 var services = _servicesService.GetServiceOfRestaurant(restaurant.Id);
-
+                var imageUrl = restaurant.RestaurantImages.Count > 0 ? restaurant.RestaurantImages[0].URL : null;
                 restaurantOverviews.Add(new RestaurantOverviewDto()
                 {
                     Id = restaurant.Id,
@@ -45,23 +46,27 @@ namespace backend.Services.RestaurantService
                     Cuisines = cuisines,
                     Services = services,
                     PriceRange = restaurant.PriceRange,
-                    Location = new LocationDto(){
-                        // Id = restaurant.LocationId,
+                    Location = new LocationDto()
+                    {
+                        Id = restaurant.Location.Id,
                         Address = restaurant.Location.Address,
-                        Ward = new WardDto() {
-                            Id = restaurant.Location.Ward.Id,
-                            Name = restaurant.Location.Ward.Name,
-                            District = new DistrictDto() {
-                                Id = restaurant.Location.Ward.District.Id,
-                                Name = restaurant.Location.Ward.District.Name,
-                                City = new CityDto() {
-                                    Id = restaurant.Location.Ward.District.CityId,
-                                    Name = restaurant.Location.Ward.District.City.Name
-                                }
-                            }
-                        }
                     },
-                    Image = restaurant.RestaurantImages == null ? null : restaurant.RestaurantImages[0].URL
+                    Ward = new WardDto()
+                    {
+                        Id = restaurant.Location.Ward.Id,
+                        Name = restaurant.Location.Ward.Name,
+                    },
+                    District = new DistrictDto()
+                    {
+                        Id = restaurant.Location.Ward.District.Id,
+                        Name = restaurant.Location.Ward.District.Name,
+                    },
+                    City = new CityDto()
+                    {
+                        Id = restaurant.Location.Ward.District.CityId,
+                        Name = restaurant.Location.Ward.District.City.Name
+                    },
+                    Image = imageUrl
                 });
             }
             return restaurantOverviews;
@@ -74,7 +79,8 @@ namespace backend.Services.RestaurantService
             var services = _servicesService.GetServiceOfRestaurant(restaurant.Id);
             var extraServices = _extraServiceService.GetExtraServiceOfRestaurant(restaurant.Id);
 
-            if(restaurant == null) {
+            if (restaurant == null)
+            {
                 return null;
             }
 
@@ -82,29 +88,34 @@ namespace backend.Services.RestaurantService
             {
                 Id = restaurant.Id,
                 Name = restaurant.Name,
+                RestaurantImages = restaurant.RestaurantImages == null ? null : _mapper.Map<List<RestaurantImage>, List<ImageDto>>(restaurant.RestaurantImages),
                 Cuisines = cuisines,
                 Services = services,
-                Location = new LocationDto(){
-                    // Id = restaurant.LocationId,
+                Location = new LocationDto()
+                {
+                    Id = restaurant.Location.Id,
                     Address = restaurant.Location.Address,
-                    Ward = new WardDto() {
-                        Id = restaurant.Location.Ward.Id,
-                        Name = restaurant.Location.Ward.Name,
-                        District = new DistrictDto() {
-                            Id = restaurant.Location.Ward.District.Id,
-                            Name = restaurant.Location.Ward.District.Name,
-                            City = new CityDto() {
-                                Id = restaurant.Location.Ward.District.CityId,
-                                Name = restaurant.Location.Ward.District.City.Name
-                            }
-                        }
-                    }
+                },
+                Ward = new WardDto()
+                {
+                    Id = restaurant.Location.Ward.Id,
+                    Name = restaurant.Location.Ward.Name,
+                },
+                District = new DistrictDto()
+                {
+                    Id = restaurant.Location.Ward.District.Id,
+                    Name = restaurant.Location.Ward.District.Name,
+                },
+                City = new CityDto()
+                {
+                    Id = restaurant.Location.Ward.District.CityId,
+                    Name = restaurant.Location.Ward.District.City.Name
                 },
                 Capacity = restaurant.Capacity,
                 SpecialDishes = restaurant.SpecialDishes,
                 Introduction = restaurant.Introduction,
                 Note = restaurant.Note,
-                MenuImages = restaurant.MenuImages == null ? null : _mapper.Map<List<MenuImage>, List<MenuImageDto>>(restaurant.MenuImages),
+                MenuImages = restaurant.MenuImages == null ? null : _mapper.Map<List<MenuImage>, List<ImageDto>>(restaurant.MenuImages),
                 BusinessHours = restaurant.BusinessHours == null ? null : _mapper.Map<List<BusinessHour>, List<BusinessHourDto>>(restaurant.BusinessHours),
                 ExtraServices = extraServices
             };

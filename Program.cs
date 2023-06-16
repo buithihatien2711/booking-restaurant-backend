@@ -1,9 +1,13 @@
 using System.Text;
 using backend.Data;
+using backend.Data.Repository.LocationRepository;
+using backend.Data.Repository.ReservationRepository;
 using backend.Data.Repository.RestaurantRepository;
 using backend.Data.Repository.UserRepository;
 using backend.Data.Seed;
 using backend.Mapping;
+using backend.Services.LocationService;
+using backend.Services.ReservationService;
 using backend.Services.RestaurantService;
 using backend.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,6 +52,12 @@ services.AddScoped<ICuisineService, CuisineService>();
 
 services.AddScoped<IExtraServiceRepository, ExtraServiceRepository>();
 services.AddScoped<IExtraServiceService, ExtraServiceService>();
+
+services.AddScoped<ILocationRepository, LocationRepository>();
+services.AddScoped<ILocationService, LocationService>();
+
+services.AddScoped<IReservationRepository, ReservationRepository>();
+services.AddScoped<IReservationService, ReservationService>();
 
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 

@@ -9,7 +9,7 @@ namespace backend.Data.Repository.RestaurantRepository
 {
     public class RestaurantRepository : IRestaurantRepository
     {
-        public static int PAGE_SIZE { get; set; } = 20;
+        public static int PAGE_SIZE { get; set; } = 15;
         private readonly DataContext _context;
 
         public RestaurantRepository(DataContext context)

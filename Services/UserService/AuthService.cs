@@ -38,6 +38,7 @@ namespace backend.Services.UserService
 
             return _tokenService.CreateToken(new UserTokenDto() 
             {
+                Id = currentUser.Id,
                 Fullname = currentUser.Fullname,
                 Phone = currentUser.Phone,
                 Email = currentUser.Email
@@ -81,6 +82,7 @@ namespace backend.Services.UserService
             _userRepository.IsSaveChange();
             return _tokenService.CreateToken(new UserTokenDto() 
             {
+                Id = newUser.Id,
                 Fullname = newUser.Fullname,
                 Phone = newUser.Phone,
                 Email = newUser.Email

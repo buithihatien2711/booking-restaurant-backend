@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230607142918_InitDb")]
-    partial class InitDb
+    [Migration("20230615042111_UpdateReservation")]
+    partial class UpdateReservation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,6 +161,9 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("NumChildren")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationStatus")
                         .HasColumnType("int");
 
                     b.Property<Guid>("RestaurantId")

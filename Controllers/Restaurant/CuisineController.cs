@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.DTOs.ResponseDTO;
 using backend.DTOs.RestaurantDTO;
 using backend.Services.RestaurantService;
 using Microsoft.AspNetCore.Mvc;
@@ -21,28 +22,25 @@ namespace backend.Controllers.Restaurant
         [HttpGet]
         public ActionResult<List<CuisineDto>> GetAllCuisine()
         {
-            return _cuisineService.GetAllCuisine();
+            return Ok(
+                new SuccessResponse<List<CuisineDto>>(){
+                    Success = true,
+                    Message = "get list cuisine success",
+                    Data = _cuisineService.GetAllCuisine()
+                }
+            );
         }
 
         [HttpGet("{idRestaurant}")]
         public ActionResult<List<CuisineDto>> GetCuisinesOfRestaurant(Guid idRestaurant)
         {
-            return _cuisineService.GetCuisineOfRestaurant(idRestaurant);
-        }
-
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(
+                new SuccessResponse<List<CuisineDto>>(){
+                    Success = true,
+                    Message = "get list cuisine success",
+                    Data = _cuisineService.GetCuisineOfRestaurant(idRestaurant)
+                }
+            );
         }
     }
 }
