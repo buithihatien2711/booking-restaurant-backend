@@ -31,7 +31,7 @@ namespace backend.Services.ReservationService
                 CreateAt = DateTime.Now,
                 UserId = userId,
                 RestaurantId = restaurantId,
-                ReservationStatus = ReservationStatus.Booked,
+                ReservationStatus = ReservationStatus.Waiting,
                 NameCustomer = reservationDto.NameCustomer,
                 PhoneCustomer = reservationDto.PhoneCustomer,
 
@@ -41,9 +41,25 @@ namespace backend.Services.ReservationService
             _reservationRepository.AddReservation(reservation);
         }
 
-        public List<ReservationDto> GetListReservation(Guid? restaurantId, int? status)
+        public void ChangeReservation(Guid reservationId, ReservationStatus status)
         {
-            throw new NotImplementedException();
+            var reservation = _reservationRepository.GetReservationById(reservationId);
+            if(reservation == null) return;
+            _reservationRepository.ChangeReservationStatus(reservation, status);
+        }
+
+        public List<ReservationOverviewDto>? GetListReservation(Guid? restaurantId, int? status, DateTime? date)
+        {
+            var reservations = _reservationRepository.GetListReservation(restaurantId, status, date);
+            if(reservations == null) return null;
+            return _mapper.Map<List<Reservation>, List<ReservationOverviewDto>>(reservations);
+        }
+
+        public ReservationDetailDto? GetReservationById(Guid reservationId)
+        {
+            var reservation = _reservationRepository.GetReservationById(reservationId);
+            if(reservation == null) return null;
+            return _mapper.Map<Reservation, ReservationDetailDto>(reservation);
         }
 
         public bool IsSaveChange()

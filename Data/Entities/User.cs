@@ -32,7 +32,7 @@ namespace backend.Data.Entities
         
         public Role Role { get; set; }
         
-        public List<Restaurant>? Restaurants { get; set; }
+        public Restaurant? Restaurant { get; set; }
 
         public List<Reservation>? Reservations { get; set; }
         

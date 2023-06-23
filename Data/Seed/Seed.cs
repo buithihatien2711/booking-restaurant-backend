@@ -83,44 +83,44 @@ namespace backend.Data.Seed
             context.SaveChanges();
         }
 
-        public static void SeedRestaurants(DataContext context) {
-            if(context.Restaurants.Any()) return;
+        // public static void SeedRestaurants(DataContext context) {
+        //     if(context.Restaurants.Any()) return;
             
-            var restaurantList = new List<Restaurant>();
+        //     var restaurantList = new List<Restaurant>();
 
-            for (int i = 0; i < 300; i++)
-            {
-                Random random = new Random();
-                PriceRange[] priceRanges = (PriceRange[])Enum.GetValues(typeof(PriceRange));
-                PriceRange randomPriceRange = priceRanges[random.Next(priceRanges.Length)];
+        //     for (int i = 0; i < 300; i++)
+        //     {
+        //         Random random = new Random();
+        //         PriceRange[] priceRanges = (PriceRange[])Enum.GetValues(typeof(PriceRange));
+        //         PriceRange randomPriceRange = priceRanges[random.Next(priceRanges.Length)];
 
-                var restaurant = new Restaurant
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Restaurant " + i,
-                    Phone = "123-456-7890",
-                    PriceRange = randomPriceRange,
-                    Capacity = 50,
-                    SpecialDishes = "Special dishes for Restaurant " + i,
-                    Introduction = "Introduction for Restaurant " + i,
-                    Note = "Note for Restaurant " + i,
-                    CreateAt = DateTime.Now,
-                    UpdateAt = DateTime.Now,
-                    UserId = new Guid("ee475df2-87c9-4cca-f211-08db6510c972"),
-                };
-                restaurantList.Add(restaurant);
-                // context.Add(restaurant);
-            }
-            context.AddRange(restaurantList);
-            context.SaveChanges();
-        }
+        //         var restaurant = new Restaurant
+        //         {
+        //             Id = Guid.NewGuid(),
+        //             Name = "Restaurant " + i,
+        //             Phone = "123-456-7890",
+        //             PriceRange = randomPriceRange,
+        //             Capacity = 50,
+        //             SpecialDishes = "Special dishes for Restaurant " + i,
+        //             Introduction = "Introduction for Restaurant " + i,
+        //             Note = "Note for Restaurant " + i,
+        //             CreateAt = DateTime.Now,
+        //             UpdateAt = DateTime.Now,
+        //             UserId = new Guid("ee475df2-87c9-4cca-f211-08db6510c972"),
+        //         };
+        //         restaurantList.Add(restaurant);
+        //         // context.Add(restaurant);
+        //     }
+        //     context.AddRange(restaurantList);
+        //     context.SaveChanges();
+        // }
     
         public static void SeedLocation(DataContext context) {
             if(context.Locations.Any()) return;
 
             List<Guid> restaurantIds = context.Restaurants.Select(r => r.Id).ToList();
             var locationList = new List<Location>();
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var location = new Location
                 {

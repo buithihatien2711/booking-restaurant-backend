@@ -10,10 +10,14 @@ namespace backend.Data.Repository.ReservationRepository
     {
         // List<Reservation> GetAllReservation();
 
-        List<Reservation> GetListReservation(Guid? restaurantId, int? status);
+        List<Reservation>? GetListReservation(Guid? restaurantId, int? status, DateTime? date);
 
         void AddReservation(Reservation reservation);
 
+        Reservation? GetReservationById(Guid reservationId);
+
         bool IsSaveChange();
+
+        void ChangeReservationStatus(Reservation reservation, ReservationStatus status);
     }
 }

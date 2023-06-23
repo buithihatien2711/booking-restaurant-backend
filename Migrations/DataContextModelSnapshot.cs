@@ -155,7 +155,6 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumAdults")
@@ -231,7 +230,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Restaurants");
                 });
@@ -506,9 +506,9 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Data.Entities.Restaurant", b =>
                 {
                     b.HasOne("backend.Data.Entities.User", "User")
-                        .WithMany("Restaurants")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .WithOne("Restaurant")
+                        .HasForeignKey("backend.Data.Entities.Restaurant", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -678,7 +678,7 @@ namespace backend.Migrations
                 {
                     b.Navigation("Reservations");
 
-                    b.Navigation("Restaurants");
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("backend.Data.Entities.Ward", b =>

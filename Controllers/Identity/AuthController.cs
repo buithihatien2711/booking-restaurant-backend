@@ -41,11 +41,11 @@ namespace backend.Controllers.Identity
         }
 
         [HttpPost("login")]
-        public ActionResult Login(UserLoginDto userLogin)
+        public ActionResult Login(UserLoginDto user, int role)
         {
             try
             {
-                if(string.IsNullOrEmpty(userLogin.Phone) || string.IsNullOrEmpty(userLogin.Password)) 
+                if(string.IsNullOrEmpty(user.Phone) || string.IsNullOrEmpty(user.Password)) 
                 {
                     return BadRequest(new ErrorResponse()
                         {
@@ -54,7 +54,7 @@ namespace backend.Controllers.Identity
                         }
                     );
                 }
-                string token = _authService.Login(userLogin);
+                string token = _authService.Login(user, role);
                 return Ok(new SuccessResponse<string>()
                 {
                     Success = true,

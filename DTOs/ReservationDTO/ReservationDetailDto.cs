@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Data.Entities;
 
-namespace backend.Data.Entities
+namespace backend.DTOs.ReservationDTO
 {
-    public class Reservation
+    public class ReservationDetailDto
     {
         public Guid Id { get; set; }
         
@@ -19,15 +20,7 @@ namespace backend.Data.Entities
         
         public DateTime CreateAt { get; set; }
         
-        public DateTime UpdateAt { get; set; }
-        
-        public Guid UserId { get; set; }
-        
-        public User User { get; set; }
-        
-        public Guid RestaurantId { get; set; }
-        
-        public Restaurant Restaurant { get; set; }
+        // public DateTime UpdateAt { get; set; }
         
         public ReservationStatus ReservationStatus { get; set; }
 

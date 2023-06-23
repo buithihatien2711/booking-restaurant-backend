@@ -55,5 +55,23 @@ namespace backend.Data.Repository.RestaurantRepository
 
             return restaurant;
         }
+
+        public Guid? GetRestaurantIdByUser(Guid idUser)
+        {
+            var user = _context.Users.Include(u => u.Restaurant).FirstOrDefault(u => u.Id == idUser);
+            if (user != null)
+            {
+                if (user.Restaurant != null)
+                {
+                    var id = user.Restaurant.Id;
+                    return user.Restaurant.Id;
+                }
+                return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

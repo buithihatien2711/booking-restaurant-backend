@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230615042111_UpdateReservation")]
-    partial class UpdateReservation
+    [Migration("20230621160823_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,6 +153,10 @@ namespace backend.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("NameCustomer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -162,6 +166,10 @@ namespace backend.Migrations
 
                     b.Property<int>("NumChildren")
                         .HasColumnType("int");
+
+                    b.Property<string>("PhoneCustomer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReservationStatus")
                         .HasColumnType("int");
@@ -226,7 +234,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Restaurants");
                 });
@@ -501,9 +510,9 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Data.Entities.Restaurant", b =>
                 {
                     b.HasOne("backend.Data.Entities.User", "User")
-                        .WithMany("Restaurants")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .WithOne("Restaurants")
+                        .HasForeignKey("backend.Data.Entities.Restaurant", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

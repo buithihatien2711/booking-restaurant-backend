@@ -11,5 +11,7 @@ namespace backend.Data.Repository.RestaurantRepository
         List<Restaurant>? GetListRestaurant(string? filter, int page = 1);
 
         Restaurant? GetRestaurantById(Guid idRestaurant);
+
+        Guid? GetRestaurantIdByUser(Guid idUser);
     }
 }

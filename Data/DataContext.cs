@@ -41,11 +41,11 @@ namespace backend.Data
             builder.Entity<RestaurantExtraService>()
                 .HasKey(rs => new {rs.RestaurantId, rs.ExtraServiceId});
 
-            builder.Entity<Restaurant>()
-                        .HasOne(c => c.User)
-                        .WithMany(u => u.Restaurants)
-                        .HasForeignKey(c => c.UserId)
-                        .OnDelete(DeleteBehavior.ClientCascade);
+            // builder.Entity<Restaurant>()
+            //             .HasOne(c => c.User)
+            //             .WithMany(u => u.Restaurants)
+            //             .HasForeignKey(c => c.UserId)
+            //             .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.Entity<Reservation>()
                         .HasOne(c => c.Restaurant)

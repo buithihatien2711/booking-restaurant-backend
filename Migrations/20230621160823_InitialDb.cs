@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class InitialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -169,7 +169,8 @@ namespace backend.Migrations
                         name: "FK_Restaurants_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,7 +249,10 @@ namespace backend.Migrations
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReservationStatus = table.Column<int>(type: "int", nullable: false),
+                    NameCustomer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneCustomer = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -435,7 +439,8 @@ namespace backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_UserId",
                 table: "Restaurants",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RestaurantServices_TypeOfServiceId",

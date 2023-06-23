@@ -21,7 +21,8 @@ namespace backend.Mapping
             CreateMap<City, CityDto>();
             CreateMap<District, DistrictDto>();
             CreateMap<Ward, WardDto>();
-            // CreateMap<Reservation, ReservationDto>();
+            CreateMap<Reservation, ReservationOverviewDto>();
+            CreateMap<Reservation, ReservationDetailDto>();
             // CreateMap<ReservationDto, Reservation>();
         }
     }

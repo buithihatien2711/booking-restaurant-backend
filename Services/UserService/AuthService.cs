@@ -17,16 +17,16 @@ namespace backend.Services.UserService
             _tokenService = tokenService;
         }
 
-        public string Login(UserLoginDto userLoginDto)
+        public string Login(UserLoginDto user, int role)
         {
-            var currentUser = _userRepository.GetUserByPhone(userLoginDto.Phone);
+            var currentUser = _userRepository.GetUserByPhone(user.Phone);
             if(currentUser == null) {
                 throw new BadHttpRequestException("Invalid phone number");
             }
 
             using var hmac = new HMACSHA512(currentUser.PasswordSalt);
             var passwordBytes = hmac.ComputeHash(
-                Encoding.UTF8.GetBytes(userLoginDto.Password)
+                Encoding.UTF8.GetBytes(user.Password)
             );
             for (int i = 1; i < currentUser.PasswordHash.Length ; i++)
             {
@@ -34,6 +34,10 @@ namespace backend.Services.UserService
                 {
                     throw new UnauthorizedAccessException("Invalid password");
                 }
+            }
+
+            if(currentUser.RoleId != role) {
+                throw new UnauthorizedAccessException("Invalid phone or password");
             }
 
             return _tokenService.CreateToken(new UserTokenDto() 
@@ -45,37 +49,37 @@ namespace backend.Services.UserService
             });
         }
 
-        public string Register(UserRegisterDto userRegisterDto)
+        public string Register(UserRegisterDto user)
         {
-            if(userRegisterDto.Password != userRegisterDto.ConfirmPassword) {
+            if(user.Password != user.ConfirmPassword) {
                 throw new BadHttpRequestException("Password and Confirm Password do not match.");
             }
 
-            if(_userRepository.GetUserByPhone(userRegisterDto.Phone) != null) {
+            if(_userRepository.GetUserByPhone(user.Phone) != null) {
                 throw new BadHttpRequestException("Phone is existed");
             }
 
-            if(_userRepository.GetUserByPhone(userRegisterDto.Email) != null) {
+            if(_userRepository.GetUserByEmail(user.Email) != null) {
                 throw new BadHttpRequestException("Email is existed");
             }
 
             using var hmac = new HMACSHA512();
-            var passwordBytes = Encoding.UTF8.GetBytes(userRegisterDto.Password);
+            var passwordBytes = Encoding.UTF8.GetBytes(user.Password);
             
             var newUser = new User
             {
                 Id = new Guid(),
-                Fullname = userRegisterDto.Fullname,
-                Phone = userRegisterDto.Phone,
+                Fullname = user.Fullname,
+                Phone = user.Phone,
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(passwordBytes),
-                Email = userRegisterDto.Email,
+                Email = user.Email,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
 
 
                 // User register
-                RoleId = 3
+                RoleId = user.Role
             };
             
             _userRepository.CreateUser(newUser);

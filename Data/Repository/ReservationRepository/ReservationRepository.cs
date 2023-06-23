@@ -21,28 +21,85 @@ namespace backend.Data.Repository.ReservationRepository
             _context.Reservations.Add(reservation);
         }
 
-        public List<Reservation> GetListReservation(Guid? restaurantId, int? status)
+        public void ChangeReservationStatus(Reservation reservation, ReservationStatus status)
+        {
+            reservation.ReservationStatus = status;
+        }
+
+        public List<Reservation>? GetListReservation(Guid? restaurantId, int? status, DateTime? date)
         {
             var reservations = _context.Reservations.Include(r => r.Restaurant).AsQueryable();
-            if(restaurantId == null){
-                if(status == null){
-                    return reservations.ToList();
-                }
-                else {
-                    reservations = reservations.Where(r => (int)r.ReservationStatus == status);
-                    return reservations.ToList();
-                }
-            }
-            else {
+            if(restaurantId != null) {
                 reservations = reservations.Where(r => r.RestaurantId == restaurantId);
-                if(status == null){
-                    return reservations.ToList();
-                }
-                else {
-                    reservations = reservations.Where(r => (int)r.ReservationStatus == status);
-                    return reservations.ToList();
-                }
             }
+            if(status != null) {
+                reservations = reservations.Where(r => (int)r.ReservationStatus == status);
+            }
+            if(date != null) {
+                reservations = reservations.Where(r => r.Time.Date == date.Value.Date);
+            }
+            return reservations.ToList();
+
+            // if(restaurantId == null){
+            //     if(status == null){
+            //         if(date == null) 
+            //         {
+            //             // restaurantId == null, status == null, date == null
+            //             return reservations.ToList();
+            //         }
+            //         else
+            //         {
+            //             // restaurantId == null, status == null, date != null
+            //             return reservations.Where(r => r.Time.Date == date).ToList();
+            //         }
+            //     }
+            //     else {
+            //         reservations = reservations.Where(r => (int)r.ReservationStatus == status);
+            //         if(date == null) 
+            //         {
+            //             // restaurantId == null, status != null, date == null
+            //             return reservations.ToList();
+            //         }
+            //         else
+            //         {
+            //             // restaurantId == null, status != null, date != null
+            //             return reservations.Where(r => r.Time.Date == date).ToList();
+            //         }
+            //     }
+            // }
+            // else {
+            //     reservations = reservations.Where(r => r.RestaurantId == restaurantId);
+            //     if(status == null){
+            //         if(date == null) 
+            //         {
+            //             // restaurantId != null, status == null, date == null
+            //             return reservations.ToList();
+            //         }
+            //         else
+            //         {
+            //             // restaurantId != null, status == null, date != null
+            //             return reservations.Where(r => r.Time.Date == date).ToList();
+            //         }
+            //     }
+            //     else {
+            //         reservations = reservations.Where(r => (int)r.ReservationStatus == status);
+            //         if(date == null) 
+            //         {
+            //             // restaurantId != null, status != null, date == null
+            //             return reservations.ToList();
+            //         }
+            //         else
+            //         {
+            //             // restaurantId != null, status != null, date != null
+            //             return reservations.Where(r => r.Time.Date == date).ToList();
+            //         }
+            //     }
+            // }
+        }
+
+        public Reservation? GetReservationById(Guid reservationId)
+        {
+            return _context.Reservations.FirstOrDefault(r => r.Id == reservationId);
         }
 
         public bool IsSaveChange()

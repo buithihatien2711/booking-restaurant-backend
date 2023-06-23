@@ -142,18 +142,18 @@ catch (Exception ex)
     logger.LogError(ex, "Migration Failed");
 }
 
-// Seed restaurant
-try
-{
-    var context = serviceProvider.GetRequiredService<DataContext>();
-    Seed.SeedRestaurants(context);
-    context.Database.Migrate();
-}
-catch (Exception ex)
-{
-    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "Migration Failed");
-}
+// // Seed restaurant
+// try
+// {
+//     var context = serviceProvider.GetRequiredService<DataContext>();
+//     Seed.SeedRestaurants(context);
+//     context.Database.Migrate();
+// }
+// catch (Exception ex)
+// {
+//     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+//     logger.LogError(ex, "Migration Failed");
+// }
 
 // Seed ward, district, city
 try

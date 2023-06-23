@@ -38,7 +38,8 @@ namespace backend.Services.RestaurantService
             {
                 var cuisines = _cuisineService.GetCuisineOfRestaurant(restaurant.Id);
                 var services = _servicesService.GetServiceOfRestaurant(restaurant.Id);
-                var imageUrl = restaurant.RestaurantImages.Count > 0 ? restaurant.RestaurantImages[0].URL : null;
+                var imageUrl = (restaurant.RestaurantImages != null) ? (restaurant.RestaurantImages.Count > 0 ? restaurant.RestaurantImages[0].URL : null) : null;
+                
                 restaurantOverviews.Add(new RestaurantOverviewDto()
                 {
                     Id = restaurant.Id,
@@ -119,6 +120,11 @@ namespace backend.Services.RestaurantService
                 BusinessHours = restaurant.BusinessHours == null ? null : _mapper.Map<List<BusinessHour>, List<BusinessHourDto>>(restaurant.BusinessHours),
                 ExtraServices = extraServices
             };
+        }
+
+        public Guid? GetRestaurantIdByUser(Guid idUser)
+        {
+            return _restaurantRepository.GetRestaurantIdByUser(idUser);
         }
     }
 }

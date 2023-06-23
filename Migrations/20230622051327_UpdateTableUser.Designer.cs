@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230615084545_UpdateReservationAddCustomerNamePhone")]
-    partial class UpdateReservationAddCustomerNamePhone
+    [Migration("20230622051327_UpdateTableUser")]
+    partial class UpdateTableUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,7 +234,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Restaurants");
                 });
@@ -509,9 +510,9 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Data.Entities.Restaurant", b =>
                 {
                     b.HasOne("backend.Data.Entities.User", "User")
-                        .WithMany("Restaurants")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .WithOne("Restaurant")
+                        .HasForeignKey("backend.Data.Entities.Restaurant", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -681,7 +682,7 @@ namespace backend.Migrations
                 {
                     b.Navigation("Reservations");
 
-                    b.Navigation("Restaurants");
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("backend.Data.Entities.Ward", b =>

@@ -54,6 +54,25 @@ namespace backend.Controllers.Restaurant
             );
         }
 
+        [HttpGet("user/{id}")]
+        public ActionResult GetRestaurantIdByUser(Guid id)
+        {
+            var idRestaurant =  _restaurantService.GetRestaurantIdByUser(id);
+            if(idRestaurant == null) {
+                return NotFound(new ErrorResponse(){
+                    Success = false,
+                    ErrorMessage = "Restaurant not found"
+                });
+            }
+            else {
+                return Ok(new SuccessResponse<Guid>() {
+                    Success = true,
+                    Message =  "Get restaurant id successfully",
+                    Data = idRestaurant.Value
+                });
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] string value)
         {
