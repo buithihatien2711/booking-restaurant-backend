@@ -13,5 +13,9 @@ namespace backend.Data.Repository.RestaurantRepository
         Restaurant? GetRestaurantById(Guid idRestaurant);
 
         Guid? GetRestaurantIdByUser(Guid idUser);
+
+        bool IsSaveChange();
+
+        void AddRestaurant(Restaurant restaurant);
     }
 }

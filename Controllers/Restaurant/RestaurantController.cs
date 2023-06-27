@@ -74,8 +74,24 @@ namespace backend.Controllers.Restaurant
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post(RestaurantAddDto restaurant, Guid userId)
         {
+             _restaurantService.AddRestaurant(restaurant, userId);
+            // await Task.Run(() =>
+            // {
+            //     _restaurantService.AddRestaurant(restaurant, userId);
+            // });
+            if(_restaurantService.IsSaveChange()) {
+                return Ok(new SuccessResponse<string>() {
+                    Success = true,
+                    Message = "Add restaurant successfully",
+                    Data = "Success"
+                });
+            }
+            return BadRequest(new ErrorResponse() {
+                Success = false,
+                ErrorMessage = "Add restaurant failed"
+            });
         }
 
         [HttpPut("{id}")]

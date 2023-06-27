@@ -10,5 +10,9 @@ namespace backend.Services.RestaurantService
         RestaurantDetailDto? GetRestaurantById(Guid idRestaurant);
 
         Guid? GetRestaurantIdByUser(Guid idUser);
+
+        void AddRestaurant(RestaurantAddDto restaurant, Guid userId);
+
+        bool IsSaveChange();
     }
 }

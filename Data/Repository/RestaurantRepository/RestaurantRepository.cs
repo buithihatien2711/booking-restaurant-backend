@@ -73,5 +73,15 @@ namespace backend.Data.Repository.RestaurantRepository
                 return null;
             }
         }
+
+        public bool IsSaveChange()
+        {
+            return _context.SaveChanges() > 0;
+        }
+
+        public void AddRestaurant(Restaurant restaurant)
+        {
+            _context.Add(restaurant);
+        }
     }
 }

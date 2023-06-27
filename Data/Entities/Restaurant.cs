@@ -51,6 +51,8 @@ namespace backend.Data.Entities
         
         public List<Reservation>? Reservations { get; set; }
 
+        public RestaurantStatus? RestaurantStatus { get; set; }
+        
         
     }
 }

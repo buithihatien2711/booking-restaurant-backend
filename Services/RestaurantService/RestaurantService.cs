@@ -1,8 +1,10 @@
+using System.Globalization;
 using AutoMapper;
 using backend.Data.Entities;
 using backend.Data.Repository.RestaurantRepository;
 using backend.DTOs.LocationDTO;
 using backend.DTOs.RestaurantDTO;
+using backend.Services.UploadImageService;
 
 namespace backend.Services.RestaurantService
 {
@@ -12,17 +14,130 @@ namespace backend.Services.RestaurantService
         private readonly ICuisineService _cuisineService;
         private readonly IServicesService _servicesService;
         private readonly IMapper _mapper;
+        private readonly IUploadImageService _uploadImageService;
         private readonly ISuitabilityService _suitabilityService;
         private readonly IExtraServiceService _extraServiceService;
 
-        public RestaurantService(IRestaurantRepository restaurantRepository, ICuisineService cuisineService, IServicesService servicesService, ISuitabilityService suitabilityService, IExtraServiceService extraServiceService, IMapper mapper)
+        public RestaurantService(IRestaurantRepository restaurantRepository, 
+                                    ICuisineService cuisineService, 
+                                    IServicesService servicesService, 
+                                    ISuitabilityService suitabilityService, 
+                                    IExtraServiceService extraServiceService, 
+                                    IMapper mapper, IUploadImageService uploadImageService)
         {
             _extraServiceService = extraServiceService;
             _suitabilityService = suitabilityService;
             _mapper = mapper;
+            _uploadImageService = uploadImageService;
             _restaurantRepository = restaurantRepository;
             _cuisineService = cuisineService;
             _servicesService = servicesService;
+        }
+
+        public void AddRestaurant(RestaurantAddDto restaurant, Guid userId)
+        {
+            var restaurantImages = new List<RestaurantImage>();
+            if(restaurant.RestaurantImages != null) {
+                foreach (var image in restaurant.RestaurantImages)
+                {
+                    // var url = await _uploadImageService.UploadImage(userId.ToString(), "Restaurant Image", DateTime.Now.ToString(), image);
+                    restaurantImages.Add(new RestaurantImage() {
+                        Id = new Guid(),
+                        URL = image,
+                    });
+                }
+            }
+
+            var menuImages = new List<MenuImage>();
+            if(restaurant.MenuImages != null) {
+                foreach (var image in restaurant.MenuImages)
+                {
+                    // var url = await _uploadImageService.UploadImage(userId.ToString(), "Restaurant Image", DateTime.Now.ToString(), image);
+                    menuImages.Add(new MenuImage() {
+                        Id = new Guid(),
+                        URL = image,
+                    });
+                }
+            }
+
+            var cuisines = new List<RestaurantCuisine>();
+            if(restaurant.Cuisines != null) {
+                foreach (var cuisine in restaurant.Cuisines)
+                {
+                    cuisines.Add(new RestaurantCuisine() {
+                        TypeOfCuisineId = cuisine
+                    });
+                }
+            }
+
+            var services = new List<Data.Entities.RestaurantService>();
+            if(restaurant.Services != null) {
+                foreach (var service in restaurant.Services)
+                {
+                    services.Add(new Data.Entities.RestaurantService() {
+                        TypeOfServiceId = service
+                    });
+                }
+            }
+
+            var extraServices = new List<RestaurantExtraService>();
+            if(restaurant.ExtraServices != null) {
+                foreach (var extraService in restaurant.ExtraServices)
+                {
+                    extraServices.Add(new RestaurantExtraService() {
+                        ExtraServiceId = extraService
+                    });
+                }
+            }
+
+            var suitabilities = new List<RestaurantSuitability>();
+            if(restaurant.Suitabilities != null) {
+                foreach (var suitability in restaurant.Suitabilities)
+                {
+                    suitabilities.Add(new RestaurantSuitability() {
+                        SuitabilityId = suitability
+                    });
+                }
+            }
+
+            var businessHours = new List<BusinessHour>();
+            if(restaurant.BusinessHours != null) {
+                foreach (var businessHour in restaurant.BusinessHours)
+                {
+                    businessHours.Add(new BusinessHour() {
+                        Id = new Guid(),
+                        Date = (Data.Entities.DayOfWeek)businessHour.Date,
+                        OpenTime = TimeSpan.Parse(businessHour.OpenTime),
+                        CloseTime = TimeSpan.Parse(businessHour.CloseTime),
+                    });
+                }
+            }
+
+            _restaurantRepository.AddRestaurant(new Restaurant(){
+                Id = new Guid(),
+                Name = restaurant.Name,
+                Phone = restaurant.Phone,
+                PriceRange = (PriceRange)restaurant.PriceRange,
+                Capacity = restaurant.Capacity,
+                SpecialDishes = restaurant.SpecialDishes,
+                Introduction = restaurant.Introduction,
+                Note = restaurant.Note,
+                CreateAt = DateTime.Now,
+                UserId = userId,
+                RestaurantImages = restaurantImages,
+                RestaurantCuisines = cuisines,
+                RestaurantServices = services,
+                RestaurantSuitabilities = suitabilities,
+                Location = new Location(){
+                    Id = new Guid(),
+                    Address = restaurant.Address,
+                    WardId = restaurant.Ward
+                },
+                RestaurantExtraServices = extraServices,
+                BusinessHours = businessHours,
+                MenuImages = menuImages,
+                RestaurantStatus = 0
+            });
         }
 
         public List<RestaurantOverviewDto>? GetListRestaurant(string? filter, int pageIndex)
@@ -125,6 +240,11 @@ namespace backend.Services.RestaurantService
         public Guid? GetRestaurantIdByUser(Guid idUser)
         {
             return _restaurantRepository.GetRestaurantIdByUser(idUser);
+        }
+
+        public bool IsSaveChange()
+        {
+            return _restaurantRepository.IsSaveChange();
         }
     }
 }

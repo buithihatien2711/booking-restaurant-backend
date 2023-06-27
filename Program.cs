@@ -9,6 +9,7 @@ using backend.Mapping;
 using backend.Services.LocationService;
 using backend.Services.ReservationService;
 using backend.Services.RestaurantService;
+using backend.Services.UploadImageService;
 using backend.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,8 @@ services.AddScoped<ILocationService, LocationService>();
 
 services.AddScoped<IReservationRepository, ReservationRepository>();
 services.AddScoped<IReservationService, ReservationService>();
+
+services.AddScoped<IUploadImageService, UploadImageService>();
 
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
@@ -189,6 +192,20 @@ catch (Exception ex)
     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "Migration Failed");
 }
+
+// Seed user
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    Seed.SeedUser(context);
+    context.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+
 // Seed location
 try
 {

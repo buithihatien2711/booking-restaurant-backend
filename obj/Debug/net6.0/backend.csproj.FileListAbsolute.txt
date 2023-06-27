@@ -86,3 +86,7 @@ D:\Ki8\booking-restaurant\backend\obj\Debug\net6.0\ref\backend.dll
 D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\cities.json
 D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\districts.json
 D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Data\Seed\Vietnam-location\wards.json
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Firebase.Auth.dll
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Firebase.Storage.dll
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\System.ServiceModel.dll
+D:\Ki8\booking-restaurant\backend\bin\Debug\net6.0\Newtonsoft.Json.dll
