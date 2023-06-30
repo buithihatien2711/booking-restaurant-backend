@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Data.Entities;
 using backend.DTOs.LocationDTO;
 
 namespace backend.DTOs.RestaurantDTO
@@ -39,5 +40,7 @@ namespace backend.DTOs.RestaurantDTO
         public List<BusinessHourDto>? BusinessHours { get; set; }
         
         public List<ExtraServiceDto>? ExtraServices { get; set; }
+
+        public RestaurantStatus? RestaurantStatus { get; set; }
     }
 }

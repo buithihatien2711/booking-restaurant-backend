@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230628032933_UpdateTableRestaurantAddNumberReservation")]
+    partial class UpdateTableRestaurantAddNumberReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,7 +216,7 @@ namespace backend.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumberReservation")
+                    b.Property<int?>("NumberReservation")
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
@@ -222,7 +225,7 @@ namespace backend.Migrations
                     b.Property<int>("PriceRange")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestaurantStatus")
+                    b.Property<int?>("RestaurantStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("SpecialDishes")

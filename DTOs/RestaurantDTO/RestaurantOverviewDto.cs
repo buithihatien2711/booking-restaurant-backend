@@ -11,11 +11,11 @@ namespace backend.DTOs.RestaurantDTO
         
         public LocationDto? Location { get; set; }
 
-        public WardDto Ward { get; set; }
+        public WardDto? Ward { get; set; }
         
-        public DistrictDto District { get; set; }
+        public DistrictDto? District { get; set; }
         
-        public CityDto City { get; set; }
+        public CityDto? City { get; set; }
         
         public List<CuisineDto>? Cuisines { get; set; }
         

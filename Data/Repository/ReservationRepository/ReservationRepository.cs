@@ -19,6 +19,10 @@ namespace backend.Data.Repository.ReservationRepository
         public void AddReservation(Reservation reservation)
         {
             _context.Reservations.Add(reservation);
+            var restaurant = _context.Restaurants.FirstOrDefault(r => r.Id == reservation.RestaurantId);
+            if(restaurant != null) {
+                restaurant.NumberReservation = restaurant.NumberReservation + 1;
+            }
         }
 
         public void ChangeReservationStatus(Reservation reservation, ReservationStatus status)
@@ -100,6 +104,11 @@ namespace backend.Data.Repository.ReservationRepository
         public Reservation? GetReservationById(Guid reservationId)
         {
             return _context.Reservations.FirstOrDefault(r => r.Id == reservationId);
+        }
+
+        public List<Restaurant> GetRestaurantAdmin(int pageIndex, int? status)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsSaveChange()

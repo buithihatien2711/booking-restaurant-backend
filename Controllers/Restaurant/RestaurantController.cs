@@ -35,6 +35,21 @@ namespace backend.Controllers.Restaurant
                 });
         }
 
+        [HttpGet("filter")]
+        public ActionResult FilterRestaurant([FromQuery]FilterRestaurantDto filter, int pageIndex = 1)
+        {
+            var (restaurants, totalPage) = _restaurantService.FilterRestaurant(filter, pageIndex);
+            return Ok(new SuccessResponse<ResponseList<RestaurantOverviewDto>>() {
+                Success = true,
+                Message = "Get list restaurant successfully",
+                Data = new ResponseList<RestaurantOverviewDto>()
+                {
+                    Data = restaurants,
+                    TotalPage = totalPage,
+                }
+            });
+        }
+
         [HttpGet("{id}")]
         public ActionResult Get(Guid id)
         {
@@ -94,9 +109,39 @@ namespace backend.Controllers.Restaurant
             });
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet("admin/restaurants/{pageIndex}")]
+        public ActionResult<string> GetListRestaurantAdmin(int pageIndex, int? status)
         {
+            var restaurants = new List<RestaurantAdminDto>();
+            int totalPage;
+            (restaurants, totalPage) = _restaurantService.GetListRestaurantAdmin(pageIndex, status);
+            return Ok(new SuccessResponse<ResponseList<RestaurantAdminDto>>() {
+                Success = true,
+                Message = "Get list restaurant successfully",
+                Data = new ResponseList<RestaurantAdminDto>() {
+                    Data = restaurants,
+                    TotalPage = totalPage
+                }
+            });
+        }
+
+        [HttpPut("changeStatus/{restaurantId}")]
+        public ActionResult Put(Guid restaurantId, int status)
+        {
+            _restaurantService.ChangeRestaurantStatus(restaurantId, (RestaurantStatus)status);
+            if(_restaurantService.IsSaveChange()) {
+                return Ok(new SuccessResponse<int>() {
+                    Success = true,
+                    Message = "Thay đổi trạng thái thành công",
+                    Data = status
+                });
+            }
+            else {
+                return BadRequest(new ErrorResponse() {
+                    Success = false,
+                    ErrorMessage = "Thay đổi trạng thái thất bại"
+                });
+            }
         }
 
         [HttpDelete("{id}")]
